@@ -87,7 +87,7 @@ void loop() {
   else{
     Serial.println(":(");
   }
-  if(current_millis - solenoid_start_time >= solenoid_safety_time) //auto close the solenoid if open for too long
+  if((solenoid_open && current_millis - solenoid_start_time) >= solenoid_safety_time) //auto close the solenoid if open for too long
   {
     digitalWrite(solenoid_pin, LOW);
     solenoid_open = false;
@@ -113,11 +113,10 @@ void logData( long forceReading,unsigned long millis){
       dataFile = SD.open("datalog.csv", FILE_WRITE);
       if (dataFile) {
         dataFile.println(millis);
-        dataFile.print(", ");
+        dataFile.print(",");
         dataFile.print(forceReading);
         dataFile.println();
         dataFile.close();
       }
 
 }
-
